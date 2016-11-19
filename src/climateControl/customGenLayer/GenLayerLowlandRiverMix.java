@@ -73,7 +73,7 @@ public class GenLayerLowlandRiverMix extends GenLayerRiverMix
         }
         for (int i1 = 0; i1 < par3 * par4; ++i1)
         {
-            if (aint[i1] != Biome.getIdForBiome(Biomes.OCEAN) && aint[i1] != Biome.getIdForBiome(Biomes.DEEP_OCEAN))
+            if (aint[i1] != Biome.getIdForBiome(Biomes.OCEAN) && aint[i1] != Biome.getIdForBiome(Biomes.DEEP_OCEAN)&& aint[i1] != Biome.getIdForBiome(Biomes.FROZEN_OCEAN))
             {
                 if (aint1[i1] == Biome.getIdForBiome(Biomes.RIVER))
                 {

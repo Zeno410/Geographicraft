@@ -3,15 +3,19 @@ package climateControl.biomeSettings;
 
 import climateControl.api.BiomeSettings;
 import biomesoplenty.api.biome.BOPBiomes;
+import biomesoplenty.common.init.ModBiomes;
 import climateControl.api.Climate;
 import climateControl.api.ClimateControlRules;
 import climateControl.api.ClimateControlSettings;
 import climateControl.api.ClimateDistribution;
+import climateControl.generator.SubBiomeChooser;
 import com.Zeno410Utils.Acceptor;
 import com.Zeno410Utils.Mutable;
+import com.google.common.base.Optional;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.biome.Biome;
 
@@ -63,6 +67,7 @@ public class BoPSettings extends BiomeSettings {
     public final Element meadow = new Element("Meadow",219,true,"COOL");
     public final Element moor = new Element("Moor",221,true,"COOL");
     public final Element mountain = new Element("Mountain",222,"WARM");
+    public final Element mountainFoothills = new Element("Mountain Foothills",93,"WARM");
     public final Element mysticGrove = new Element("Mystic Grove",223,3,"MEDIUM");
     public final ID oasis = new ID("Oasis",224);
     //public final ID oceanicAbyss = new ID("Oceanic Abyss (Ocean)",72);
@@ -124,96 +129,111 @@ public class BoPSettings extends BiomeSettings {
 
     //private setBoPID()
 
+    private int bopID(Optional<Biome> bopBiome) {
+        try {
+            return Biome.getIdForBiome(bopBiome.get());
+        } catch (IllegalStateException e) {
+            return -1;
+        }
+
+    }
     @Override
     public void setNativeBiomeIDs(File configDirectory) {
         try{
-            this.alps.setIDFrom(BOPBiomes.alps.get());
-            this.bambooForest.setIDFrom(BOPBiomes.bamboo_forest.get());
-            this.bayou.setIDFrom(BOPBiomes.bayou.get());
-            this.bog.setIDFrom(BOPBiomes.bog.get());
-            this.borealForest.setIDFrom(BOPBiomes.boreal_forest.get());
-            this.chaparral.setIDFrom(BOPBiomes.chaparral.get());
-            this.cherryBlossomGrove.setIDFrom(BOPBiomes.cherry_blossom_grove.get());
-            this.coniferousForest.setIDFrom(BOPBiomes.coniferous_forest.get());
-            this.coralReef.setIDFrom(BOPBiomes.coral_reef.get());
-            this.crag.setIDFrom(BOPBiomes.crag.get());
-            this.deadForest.setIDFrom(BOPBiomes.dead_forest.get());
-            this.deadSwamp.setIDFrom(BOPBiomes.dead_swamp.get());
-            this.fen.setIDFrom(BOPBiomes.fen.get());
-            this.flowerField.setIDFrom(BOPBiomes.flower_field.get());
-            this.flowerIsland.setIDFrom(BOPBiomes.flower_island.get());
-            this.grassland.setIDFrom(BOPBiomes.grassland.get());
-            this.glacier.setIDFrom(BOPBiomes.glacier.get());
-            this.grove.setIDFrom(BOPBiomes.grove.get());
-            this.heathland.setIDFrom(BOPBiomes.heathland.get());
-            this.highland.setIDFrom(BOPBiomes.highland.get());
-            this.kelpForest.setIDFrom(BOPBiomes.kelp_forest.get());
-            this.lavenderFields.setIDFrom(BOPBiomes.lavender_fields.get());
-            this.lushDesert.setIDFrom(BOPBiomes.lush_desert.get());
-            this.lushSwamp.setIDFrom(BOPBiomes.lush_swamp.get());
-            this.mangrove.setIDFrom(BOPBiomes.mangrove.get());
-            this.mapleWoods.setIDFrom(BOPBiomes.maple_woods.get());
-            this.marsh.setIDFrom(BOPBiomes.marsh.get());
-            this.meadow.setIDFrom(BOPBiomes.meadow.get());
-            this.mysticGrove.setIDFrom(BOPBiomes.mystic_grove.get());
-            this.moor.setIDFrom(BOPBiomes.moor.get());
-            this.mountain.setIDFrom(BOPBiomes.mountain.get());
-            this.ominousWoods.setIDFrom(BOPBiomes.ominous_woods.get());
-            this.oasis.setIDFrom(BOPBiomes.oasis.get());
-            this.orchard.setIDFrom(BOPBiomes.orchard.get());
-            this.originVally.setIDFrom(BOPBiomes.origin_island.get());
-            this.outback.setIDFrom(BOPBiomes.outback.get());
-            this.overgrownCliffs.setIDFrom(BOPBiomes.overgrown_cliffs.get());
-            this.prairie.setIDFrom(BOPBiomes.prairie.get());
-            this.quagmire.setIDFrom(BOPBiomes.quagmire.get());
-            this.rainforest.setIDFrom(BOPBiomes.rainforest.get());
-            this.redwoodForest.setIDFrom(BOPBiomes.redwood_forest.get());
-            this.sacredSprings.setIDFrom(BOPBiomes.sacred_springs.get());
+            this.alps.biomeID().set(bopID(BOPBiomes.alps));
+            this.bambooForest.biomeID().set(bopID(BOPBiomes.bamboo_forest));
+            this.bayou.biomeID().set(bopID(BOPBiomes.bayou));
+            this.bog.biomeID().set(bopID(BOPBiomes.bog));
+            this.borealForest.biomeID().set(bopID(BOPBiomes.boreal_forest));
+            this.chaparral.biomeID().set(bopID(BOPBiomes.chaparral));
+            this.cherryBlossomGrove.biomeID().set(bopID(BOPBiomes.cherry_blossom_grove));
+            this.coniferousForest.biomeID().set(bopID(BOPBiomes.coniferous_forest));
+            this.coralReef.biomeID().set(bopID(BOPBiomes.coral_reef));
+            this.crag.biomeID().set(bopID(BOPBiomes.crag));
+            this.deadForest.biomeID().set(bopID(BOPBiomes.dead_forest));
+            this.deadSwamp.biomeID().set(bopID(BOPBiomes.dead_swamp));
+            this.fen.biomeID().set(bopID(BOPBiomes.fen));
+            this.flowerField.biomeID().set(bopID(BOPBiomes.flower_field));
+            this.flowerIsland.biomeID().set(bopID(BOPBiomes.flower_island));
+            this.grassland.biomeID().set(bopID(BOPBiomes.grassland));
+            this.glacier.biomeID().set(bopID(BOPBiomes.glacier));
+            this.grove.biomeID().set(bopID(BOPBiomes.grove));
+            this.heathland.biomeID().set(bopID(BOPBiomes.heathland));
+            this.highland.biomeID().set(bopID(BOPBiomes.highland));
+            this.kelpForest.biomeID().set(bopID(BOPBiomes.kelp_forest));
+            this.lavenderFields.biomeID().set(bopID(BOPBiomes.lavender_fields));
+            this.lushDesert.biomeID().set(bopID(BOPBiomes.lush_desert));
+            this.lushSwamp.biomeID().set(bopID(BOPBiomes.lush_swamp));
+            this.mangrove.biomeID().set(bopID(BOPBiomes.mangrove));
+            this.mapleWoods.biomeID().set(bopID(BOPBiomes.maple_woods));
+            this.marsh.biomeID().set(bopID(BOPBiomes.marsh));
+            this.meadow.biomeID().set(bopID(BOPBiomes.meadow));
+            this.mysticGrove.biomeID().set(bopID(BOPBiomes.mystic_grove));
+            this.moor.biomeID().set(bopID(BOPBiomes.moor));
+            this.mountain.biomeID().set(bopID(BOPBiomes.mountain));
+            this.mountainFoothills.biomeID().set(bopID(BOPBiomes.mountain_foothills));
+            this.ominousWoods.biomeID().set(bopID(BOPBiomes.ominous_woods));
+            this.oasis.biomeID().set(bopID(BOPBiomes.oasis));
+            this.orchard.biomeID().set(bopID(BOPBiomes.orchard));
+            this.originVally.biomeID().set(bopID(BOPBiomes.origin_island));
+            this.outback.biomeID().set(bopID(BOPBiomes.outback));
+            this.overgrownCliffs.biomeID().set(bopID(BOPBiomes.overgrown_cliffs));
+            this.prairie.biomeID().set(bopID(BOPBiomes.prairie));
+            this.quagmire.biomeID().set(bopID(BOPBiomes.quagmire));
+            this.rainforest.biomeID().set(bopID(BOPBiomes.rainforest));
+            this.redwoodForest.biomeID().set(bopID(BOPBiomes.redwood_forest));
+            this.sacredSprings.biomeID().set(bopID(BOPBiomes.sacred_springs));
             this.savanna.setIDFrom(Biomes.SAVANNA);
             this.savannaPlateau.setIDFrom(Biomes.SAVANNA_PLATEAU);
-            this.seasonalForest.setIDFrom(BOPBiomes.seasonal_forest.get());
-            this.shield.setIDFrom(BOPBiomes.shield.get());
-            this.shrubland.setIDFrom(BOPBiomes.shrubland.get());
-            this.snowyConiferousForest.setIDFrom(BOPBiomes.snowy_coniferous_forest.get());
-            this.snowyForest.setIDFrom(BOPBiomes.snowy_forest.get());
-            this.steppe.setIDFrom(BOPBiomes.steppe.get());
-            this.temperateRainforest.setIDFrom(BOPBiomes.temperate_rainforest.get());
-            this.tropicalRainforest.setIDFrom(BOPBiomes.tropical_rainforest.get());
-            this.tropicalIslands.setIDFrom(BOPBiomes.tropical_island.get());
-            this.tundra.setIDFrom(BOPBiomes.tundra.get());;
-            this.volcano.setIDFrom(BOPBiomes.volcanic_island.get());
-            this.wasteland.setIDFrom(BOPBiomes.wasteland.get());
-            this.wetland.setIDFrom(BOPBiomes.wetland.get());
-            this.woodland.setIDFrom(BOPBiomes.woodland.get());
-            try {
-                this.eucalyptusForest.setIDFrom(BOPBiomes.eucalyptus_forest.get());
-            } catch (java.lang.NoSuchFieldError e) {
-                // disable the "new" biomes in case of "old" BoP
-                this.eucalyptusForest.biomeID().set(-1);
-            }
-            try {
-                this.landOfLakes.setIDFrom(BOPBiomes.land_of_lakes.get());
-            } catch (java.lang.NoSuchFieldError e) {
-                // disable the "new" biomes in case of "old" BoP
-                this.landOfLakes.biomeID().set(-1);
-            }
-            try {
-                this.xericShrubland.setIDFrom(BOPBiomes.xeric_shrubland.get());
-            } catch (java.lang.NoSuchFieldError e) {
-                // disable the "new" biomes in case of "old" BoP
-                this.xericShrubland.biomeID().set(-1);
-            }
+            this.seasonalForest.biomeID().set(bopID(BOPBiomes.seasonal_forest));
+            this.shield.biomeID().set(bopID(BOPBiomes.shield));
+            this.shrubland.biomeID().set(bopID(BOPBiomes.shrubland));
+            this.snowyConiferousForest.biomeID().set(bopID(BOPBiomes.snowy_coniferous_forest));
+            this.snowyForest.biomeID().set(bopID(BOPBiomes.snowy_forest));
+            this.steppe.biomeID().set(bopID(BOPBiomes.steppe));
+            this.temperateRainforest.biomeID().set(bopID(BOPBiomes.temperate_rainforest));
+            this.tropicalRainforest.biomeID().set(bopID(BOPBiomes.tropical_rainforest));
+            this.tropicalIslands.biomeID().set(bopID(BOPBiomes.tropical_island));
+            this.tundra.biomeID().set(bopID(BOPBiomes.tundra));;
+            this.volcano.biomeID().set(bopID(BOPBiomes.volcanic_island));
+            this.wasteland.biomeID().set(bopID(BOPBiomes.wasteland));
+            this.wetland.biomeID().set(bopID(BOPBiomes.wetland));
+            this.woodland.biomeID().set(bopID(BOPBiomes.woodland));
+            this.eucalyptusForest.biomeID().set(bopID(BOPBiomes.eucalyptus_forest));
+            this.landOfLakes.biomeID().set(bopID(BOPBiomes.land_of_lakes));
+            this.xericShrubland.biomeID().set(bopID(BOPBiomes.xeric_shrubland));
         }
     catch (java.lang.NoClassDefFoundError e) {
         } 
     }
+    // Given a biomeId, return a replacer with similar results to the BoP routines
+    public BiomeReplacer.Variable getCommonSubBiome(ID biome)
+    {
 
-    private HashMap<ID,BiomeReplacer.Variable> subBiomeSets;
+        List<Integer> subBiomeIds = ModBiomes.subBiomesMap.get(biome.biomeID());
+        BiomeReplacer.Variable result = new BiomeReplacer.Variable();
+        if ((subBiomeIds == null)||(subBiomeIds.size() == 0)) {
+            // no sub-biomes. Put in one copy of itself in case something wants to fiddle
+            result.add(biome, 1);
+        } else {
+            int n = subBiomeIds.size();
+            for (int i = 0; i < n ; i++ ) {
+                // put in all the alternatives as equiprobable
+                // because I don't supress sub-biomes on edges add in copies of the biomes itself
+                result.add(biome, 1);
+                result.addByNumber(subBiomeIds.get(i), 1);
+            }
+        }
+        return result;
+    }
+
+    // if this generates a NPE arrangeInteractions hasn't been run
+    private HashMap<ID,BiomeReplacer.Variable> subBiomeSets;// = new HashMap<ID,BiomeReplacer.Variable>();
 
     private BiomeReplacer.Variable subBiomeSet(ID biome) {
         BiomeReplacer.Variable result = subBiomeSets.get(biome);
         if (result == null) {
-            result = new BiomeReplacer.Variable();
+            result = getCommonSubBiome(biome);
             subBiomeSets.put(biome, result);
         }
         return result;
@@ -228,15 +248,31 @@ public class BoPSettings extends BiomeSettings {
         }
     }
 
-    public void setSubBiomes(ClimateControlSettings settings) {
+    @Override
+    public void arrangeInterations(ArrayList<BiomeSettings> biomeSettings) {
+        //if (1>0) throw new RuntimeException();
         subBiomeSets = new HashMap<ID,BiomeReplacer.Variable>();
-        ArrayList<BiomeSettings> biomeSettings = settings.biomeSettings();
         for (BiomeSettings biomeSetting: biomeSettings) {
             if (biomeSetting instanceof OceanBiomeSettings) {
                 OceanBiomeSettings oceanSettings = (OceanBiomeSettings)biomeSetting;
-                addSubBiome(oceanSettings.coastalOcean,this.coralReef);
-                addSubBiome(oceanSettings.coastalOcean,this.kelpForest);
+                BiomeReplacer oldReplacer = oceanSettings.coastalOcean.subBiomeChooser();
+                if (oldReplacer != BiomeReplacer.noChange) {
+                    throw new RuntimeException("Geographicraft encountered unexpected subbiome settings attampting to insert BoP Coral Reef and Kelp Forest");
+                }
+                BiomeReplacer.Variable newReplacer = new BiomeReplacer.Variable();
+                newReplacer.add(this.coralReef, 1);
+                newReplacer.add(this.kelpForest, 1);
+                oceanSettings.coastalOcean.setSubBiomeChooser(newReplacer);
             }
+        }
+    }
+
+
+    @Override
+    public void update(SubBiomeChooser subBiomeChooser) {
+        super.update(subBiomeChooser);
+        for (Element element: this.elements()) {
+            subBiomeChooser.set(element.biomeID().value(), subBiomeSet(element));
         }
     }
 

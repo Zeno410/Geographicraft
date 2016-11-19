@@ -19,7 +19,6 @@ import climateControl.genLayerPack.GenLayerOneSixBiome;
 import climateControl.genLayerPack.GenLayerRareBiome;
 import climateControl.genLayerPack.GenLayerRiver;
 import climateControl.genLayerPack.GenLayerRiverInit;
-import climateControl.genLayerPack.GenLayerShore;
 import climateControl.genLayerPack.GenLayerSmooth;
 import climateControl.genLayerPack.GenLayerSwampRivers;
 import climateControl.genLayerPack.GenLayerVoronoiZoom;

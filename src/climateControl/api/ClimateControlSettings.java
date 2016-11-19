@@ -67,6 +67,7 @@ public class ClimateControlSettings extends Settings {
     private static final String zSpawnOffsetName = "zSpawnOffset";
     private static final String mountainsChains = "Mountains in Mountain Chains";
     private static final String frozenIcecapName = "Frozen Icecaps";
+    private static final String landExpansionRoundsName = "Land Expansion Rounds";
 
     private final Category climateZoneCategory = category("Climate Zone Parameters","" +
                     "Full-size is similar to 1.7 defaults. " +
@@ -201,6 +202,9 @@ public class ClimateControlSettings extends Settings {
             separateLandmassesName, true, "True mostly stops landmasses merging." +
             "With default settings you will get an oceanic world if true and " +
             "a continental world if false");
+    public final Mutable<Integer> landExpansionRounds = oceanControlCategory.intSetting(landExpansionRoundsName, 1,
+            "Rounds of continent and large island expansion in oceanic worlds (with separateLandmasses off). "+
+            "More makes continents larger and oceans narrower. Default is 1.");
 
     private OceanBiomeSettings oceanBiomeSettings = new OceanBiomeSettings();
 
@@ -226,8 +230,11 @@ public class ClimateControlSettings extends Settings {
     public final Mutable<Boolean> forceStartContinent = climateControlCategory.booleanSetting(
             forceStartContinentName,true,"force small continent near origin");
 
+    public final Mutable<Boolean> noBoPSubBiomes = climateControlCategory.booleanSetting(
+            noBoPSubBiomesName, true, "suppress Bop sub-biome generation");
+
     public final boolean doBoPSubBiomes() {
-        return false;
+        return noBoPSubBiomes.value()==false;
     }
 
     public final Mutable<String> externalBiomeNames = climateControlCategory.stringSetting(externalBiomesListName,
@@ -293,6 +300,17 @@ public class ClimateControlSettings extends Settings {
             registered.object.setNativeBiomeIDs(configDirectory);
             //registered.object.nameDefaultClimates();
         }
+        this.doBiomeSettingsInteractions();
+    }
+
+    private boolean interactionsDone = false;
+    public void doBiomeSettingsInteractions() {
+        if (interactionsDone) return;
+        for (BiomeSettings setting: biomeSettings()) {
+            //ClimateControl.logger.info(setting.toString());
+            setting.arrangeInterations(biomeSettings());
+        }
+        interactionsDone = true;
     }
 
     @Override
@@ -306,19 +324,7 @@ public class ClimateControlSettings extends Settings {
 
         for (BiomeSettings setting: generalBiomeSettings()) {
             //ClimateControl.logger.info(setting.toString());
-            if (setting instanceof BoPSettings) {
-                ArrayList<Incidence> incidences  = ((BoPSettings)setting).incidences();
-                for (Incidence incidence: incidences) {
-                    //ClimateControl.logger.info("Vanilla "+incidence.biome + " " + incidence.incidence);
-                }
-            }
             setting.readFrom(source);
-            if (setting instanceof BoPSettings) {
-                ArrayList<Incidence> incidences  = ((BoPSettings)setting).incidences();
-                for (Incidence incidence: incidences) {
-                    //ClimateControl.logger.info("Vanilla "+incidence.biome + " " + incidence.incidence);
-                }
-            }
         }
         partitioners= new ArrayList<DistributionPartitioner>();
         if (mountainChains.value()) {

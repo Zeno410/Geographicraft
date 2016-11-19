@@ -31,7 +31,6 @@ import climateControl.customGenLayer.GenLayerPrettyShore;
 import climateControl.customGenLayer.GenLayerRandomBiomes;
 
 import climateControl.customGenLayer.GenLayerSmoothCoast;
-import climateControl.customGenLayer.GenLayerSmoothWithBiomes;
 import climateControl.customGenLayer.GenLayerSubBiome;
 
 import climateControl.customGenLayer.GenLayerLandReport;
@@ -44,7 +43,6 @@ import climateControl.genLayerPack.GenLayerAddIsland;
 import climateControl.genLayerPack.GenLayerFuzzyZoom;
 import climateControl.genLayerPack.GenLayerPack;
 import climateControl.genLayerPack.GenLayerRareBiome;
-import climateControl.genLayerPack.GenLayerShore;
 import climateControl.genLayerPack.GenLayerZoom;
 import com.Zeno410Utils.IntRandomizer;
 import com.Zeno410Utils.RandomIntUser;
@@ -226,10 +224,14 @@ public class CorrectedContinentsGenerator extends AbstractWorldGenerator {
     private GenLayerPack growRound(GenLayerPack genlayeraddisland,long firstSeed,long secondSeed, boolean climatesAssigned) {
                 // add land without merging if separating and just add otherwise
         if (settings().separateLandmasses.value()||climatesAssigned) {
-            genlayeraddisland = new GenLayerAddLand(firstSeed, genlayeraddisland,true);
-            genlayeraddisland = new GenLayerBreakMergers(firstSeed+1000,genlayeraddisland);
-            genlayeraddisland = new GenLayerAdjustIsland(secondSeed, genlayeraddisland,3,11,12,true);
-            genlayeraddisland = new GenLayerBreakMergers(secondSeed+1000,genlayeraddisland);
+            for (int round = 0; round <  settings().landExpansionRounds.value(); round++) {
+                // make the seeds change
+                int adjust = (round)*50;
+                genlayeraddisland = new GenLayerAddLand(firstSeed + adjust, genlayeraddisland,true);
+                genlayeraddisland = new GenLayerBreakMergers(firstSeed + adjust+1000,genlayeraddisland);
+                genlayeraddisland = new GenLayerAdjustIsland(secondSeed + adjust, genlayeraddisland,3,11,12,true);
+                genlayeraddisland = new GenLayerBreakMergers(secondSeed + adjust + 1000,genlayeraddisland);
+            }
         } else {
             genlayeraddisland = new GenLayerAddLand(firstSeed, genlayeraddisland,climatesAssigned);
             genlayeraddisland = new GenLayerAdjustIsland(secondSeed, genlayeraddisland,3,11,12,

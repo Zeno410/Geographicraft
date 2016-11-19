@@ -154,6 +154,8 @@ public class DimensionManager {
             if (!dimension.baseDirectory().exists()) {
             }
         }
+        Named<ClimateControlSettings> dimensionSetting = Named.from(masterSettings.name, result);
+        addonConfigManager.updateConfig(dimensionSetting, configDirectory, dimension.configDirectory());
         /*Configuration workingConfig = new Configuration(suggestedConfigFile);
         workingConfig.load();
         ConfigManager<ClimateControlSettings> workingConfigManager = new ConfigManager<ClimateControlSettings>(
@@ -161,7 +163,7 @@ public class DimensionManager {
         workingConfigManager.setWorldFile(dimension.baseDirectory());
         workingConfigManager.saveWorldSpecific();*/
 
-        addonConfigManager.saveConfigs(configDirectory, dimension.configDirectory(), masterSettings);
+        addonConfigManager.saveConfigs(configDirectory, dimension.configDirectory(), dimensionSetting);
 
         for (Named<BiomeSettings> addonSetting: result.registeredBiomeSettings()) {
             addonConfigManager.initializeConfig(addonSetting, configDirectory);
@@ -398,7 +400,7 @@ public class DimensionManager {
                 if (currentSettings.noGenerationChanges.value() == false) {
                     //logger.info(new ChunkGeneratorExtractor().extractFrom((WorldServer)world).toString());
                     try {
-                        new ChunkGeneratorExtractor().impose((WorldServer) world, new MapGenVillage());
+                        //new ChunkGeneratorExtractor().impose((WorldServer) world, new MapGenVillage());
                     } catch (Exception e) {
                     } catch (NoClassDefFoundError e) {
                     }

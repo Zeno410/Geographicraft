@@ -17,7 +17,7 @@ public class Zeno410Logger {
   static private FileHandler fileTxt;
   static private SimpleFormatter formatterTxt;
 
-  public static final boolean suppress  = false;
+  public static final boolean suppress  = true;
 
   public static void crashIfRecording(RuntimeException toThrow) {
       if (suppress) return;

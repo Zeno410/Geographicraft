@@ -43,6 +43,8 @@ public class BiomeConfigManager<Type extends Settings> {
         }
 
         //File specificModFile = new File(specificDirectory,modConfigName);
+        if (!specificDirectory.exists()) specificDirectory.mkdir();
+        if (!specificDirectory.exists()) throw new RuntimeException("cannot make directory "+specificDirectory.getAbsolutePath());
         File specificAddOnDirectory = new File(specificDirectory,groupDirectoryName);
         if (!specificAddOnDirectory.exists()) specificAddOnDirectory.mkdir();
         if (!specificAddOnDirectory.exists()) throw new RuntimeException(specificAddOnDirectory.getAbsolutePath());

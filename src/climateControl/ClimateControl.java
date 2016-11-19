@@ -40,7 +40,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-@Mod(modid = "geographicraft", name = "GeographiCraft", version = "0.7.1",acceptableRemoteVersions = "*")
+@Mod(modid = "geographicraft", name = "GeographiCraft", version = "0.7.5",acceptableRemoteVersions = "*")
 
 public class ClimateControl {
     public static Logger logger = new Zeno410Logger("ClimateControl").logger();

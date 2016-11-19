@@ -128,7 +128,7 @@ public class GenLayerShoreCC extends GenLayerPack
                             }
                             else
                             {
-                                aint1[j1 + i1 * par3] = Biome.getIdForBiome(Biomes.DESERT);
+                                aint1[j1 + i1 * par3] = Biome.getIdForBiome(Biomes.MESA);
                             }
                         }
                         else

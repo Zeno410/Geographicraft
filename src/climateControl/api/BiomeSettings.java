@@ -35,7 +35,7 @@ abstract public class BiomeSettings extends Settings {
         incidenceCategory = category(categoryName+"Incidences");
         villagesCategory = category(categoryName+"Villages");
         climateCategory = category(categoryName+"Climates","Climate Types are: SNOWY,COOL,WARM,HOT,OCEAN,DEEP_OCEAN"+
-                "MEDIUM,PLAINS,LAND.  MEDIUM is COOL and WARM, PLAINS is COOL and WARM and HOT, LAND is all four land");
+                "MEDIUM,PLAINS,LAND, and SEA.  MEDIUM is COOL and WARM, PLAINS is COOL and WARM and HOT, LAND is all four land, SEA is both oceans");
     }
 
     public ArrayList<Element> elements() {return elements;}
@@ -89,6 +89,8 @@ abstract public class BiomeSettings extends Settings {
             } catch (NullPointerException e) {
                 biomeID().set(-1);
                 //ClimateControl.logger.info(name + " disabled");
+            } catch (IllegalStateException e) {
+                biomeID().set(-1);
             }
         }
         
@@ -99,6 +101,8 @@ abstract public class BiomeSettings extends Settings {
         }
 
         private BiomeReplacer subBiomeChooser = BiomeReplacer.noChange;
+
+        public BiomeReplacer subBiomeChooser() {return subBiomeChooser;}
 
         public void setSubBiomeChooser(BiomeReplacer subBiomeChooser) {
             this.subBiomeChooser = subBiomeChooser;
@@ -288,6 +292,9 @@ abstract public class BiomeSettings extends Settings {
     public abstract boolean biomesAreActive();
 
     public void report() {}
+
+    // stub for settings to adjust one another (for subbiomes at present)
+    public void arrangeInterations(ArrayList<BiomeSettings> biomeSettings) {}
 
     public void nameDefaultClimates() {
         for (ID element: this.ids) {

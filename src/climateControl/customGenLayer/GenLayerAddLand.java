@@ -1,7 +1,5 @@
 
 package climateControl.customGenLayer;
-import climateControl.genLayerPack.GenLayerPack;
-import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;
 
@@ -36,6 +34,10 @@ public class GenLayerAddLand extends GenLayerNeighborTesting
         int[] aint = this.parent.getInts(i1, j1, k1, l1);
         taste(aint,k1*l1);
         int[] aint1 = IntCache.getIntCache(par3 * par4);
+        // intcache can be released inappropriately
+        while (aint1 == aint) {
+            aint1 = IntCache.getIntCache(par3 * par4);
+        }
         poison(aint1,par3*par4);
         taste(aint,k1*l1);
 
