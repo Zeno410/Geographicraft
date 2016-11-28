@@ -21,7 +21,6 @@ import com.Zeno410Utils.PropertyManager;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.event.terraingen.WorldTypeEvent;
@@ -35,12 +34,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-@Mod(modid = "geographicraft", name = "GeographiCraft", version = "0.7.5",acceptableRemoteVersions = "*")
+@Mod(modid = "geographicraft", name = "GeographiCraft", version = "0.7.7",acceptableRemoteVersions = "*", acceptedMinecraftVersions = "[1.9.4,1.11]")
 
 public class ClimateControl {
     public static Logger logger = new Zeno410Logger("ClimateControl").logger();
